@@ -1,16 +1,26 @@
-main: main.o funcs.o
-	g++ -o main main.o funcs.o
+main: main.o test_ascii.o caesar.o vigenere.o decryption.o;
+	g++ -o main main.o test_ascii.o caesar.o vigenere.o decryption.o;
 
-tests: tests.o funcs.o
-	g++ -o tests tests.o funcs.o
+tests: tests.o test_ascii.o caesar.o vigenere.o decryption.o;
+	g++ -o tests tests.o test_ascii.o caesar.o vigenere.o decryption.o;
 
-
-
-funcs.o: funcs.cpp funcs.h
-
-main.o: main.cpp funcs.h
-
-tests.o: tests.cpp doctest.h funcs.h
-
+decryption.o: decryption.cpp decryption.h
+	g++ -c decryption.cpp
+	
+vigenere.o:  vigenere.cpp vigenere.h 
+	g++ -c vigenere.cpp 
+	
+caesar.o: caesar.cpp caesar.h
+	g++ -c caesar.cpp
+	
+test_ascii.o: test_ascii.cpp test_ascii.h
+	g++ -c test_ascii.cpp 
+	
+main.o: main.cpp test_ascii.h caesar.h
+	g++ -c main.cpp
+	
+tests.o: tests.cpp doctest.h
+	g++ -std=c++11 -c tests.cpp 
+	
 clean:
-	rm -f main.o funcs.o tests.o
+	rm -f main tests main.o tests.o test_ascii.o caesar.o vigenere.o decryption.o;
